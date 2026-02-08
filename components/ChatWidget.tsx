@@ -1,6 +1,6 @@
 'use client';
 
-import { useChat, type Message } from '@ai-sdk/react';
+import { useChat, type UIMessage } from '@ai-sdk/react';
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
@@ -75,7 +75,7 @@ export default function ChatWidget() {
                         </div>
                     )}
 
-                    {messages.map((m: Message) => (
+                    {messages.map((m: UIMessage) => (
                         <div
                             key={m.id}
                             className={cn(
@@ -101,7 +101,9 @@ export default function ChatWidget() {
                                         : "bg-white/5 text-slate-200 border border-white/10 rounded-tl-sm"
                                 )}
                             >
-                                {m.content}
+                                {m.parts.filter(p => p.type === 'text').map((p, i) => (
+                                    <span key={i}>{p.text}</span>
+                                ))}
                             </div>
                         </div>
                     ))}
