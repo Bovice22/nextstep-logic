@@ -28,12 +28,17 @@ module.exports = {
             },
             keyframes: {
                 'pulse-blue': {
-                    '0%, 100%': { boxShadow: '0 0 0 0 rgba(56, 56, 250, 0.7)', transform: 'scale(0.95)' },
+                    '0%, 100%': { boxShadow: '0 0 0 0 rgba(56, 56, 250, 0.7)', transform: 'scale(1)' },
                     '70%': { boxShadow: '0 0 0 10px rgba(56, 56, 250, 0)', transform: 'scale(1)' },
+                },
+                'bounce-subtle': {
+                    '0%, 100%': { transform: 'translateY(-5%)', animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)' },
+                    '50%': { transform: 'translateY(0)', animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' },
                 }
             },
             animation: {
                 'pulse-blue': 'pulse-blue 2s infinite',
+                'bounce-subtle': 'bounce-subtle 3s infinite',
             }
         },
     },
