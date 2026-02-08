@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -15,10 +16,15 @@ export default function Home() {
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
                         <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white shadow-[0_0_15px_rgba(56,56,250,0.5)]">
-                                <span className="material-symbols-outlined text-xl">bolt</span>
+                            <div className="relative w-32 h-10">
+                                <Image
+                                    src="/Full Color.png"
+                                    alt="NextStep Logic Logo"
+                                    fill
+                                    className="object-contain"
+                                    priority
+                                />
                             </div>
-                            <span className="text-white text-xl font-bold tracking-tight">NextStep Logic</span>
                         </div>
 
                         {/* Desktop Nav */}
@@ -302,10 +308,14 @@ export default function Home() {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                         <div className="col-span-1 md:col-span-1">
                             <div className="flex items-center gap-2 mb-6">
-                                <div className="w-6 h-6 rounded bg-primary flex items-center justify-center text-white">
-                                    <span className="material-symbols-outlined text-sm">bolt</span>
+                                <div className="relative w-32 h-10">
+                                    <Image
+                                        src="/Full Color.png"
+                                        alt="NextStep Logic Logo"
+                                        fill
+                                        className="object-contain"
+                                    />
                                 </div>
-                                <span className="text-white text-lg font-bold">NextStep Logic</span>
                             </div>
                             <p className="text-slate-500 text-sm leading-relaxed">
                                 NextStep Logic helps small businesses automate customer communication, streamline workflows, and operate more efficiently using practical AI solutions.
