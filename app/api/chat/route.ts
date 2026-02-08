@@ -27,5 +27,5 @@ export async function POST(req: Request) {
     If asked to schedule a consultation, direct them to the "Schedule Consultation" button or the contact section.`,
     });
 
-    return result.toTextStreamResponse();
+    return result.toUIMessageStreamResponse();
 }
