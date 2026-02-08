@@ -8,8 +8,20 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
 
     try {
+        // DEBUG: List models to see what is available for this key
+        const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+        if (apiKey) {
+            try {
+                const modelsResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                const modelsData = await modelsResponse.json();
+                console.log("AVAILABLE MODELS FOR KEY:", JSON.stringify(modelsData, null, 2));
+            } catch (listError) {
+                console.error("Failed to list models:", listError);
+            }
+        }
+
         const result = streamText({
-            model: google('gemini-pro'),
+            model: google('gemini-1.5-flash'),
             messages: await convertToModelMessages(messages),
             system: `You are a helpful AI assistant for NextStep Logic, an automation agency.
         
