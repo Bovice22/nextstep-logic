@@ -8,18 +8,6 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
 
     try {
-        // DEBUG: List models to see what is available for this key
-        const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-        if (apiKey) {
-            try {
-                const modelsResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-                const modelsData = await modelsResponse.json();
-                console.log("AVAILABLE MODELS FOR KEY:", JSON.stringify(modelsData, null, 2));
-            } catch (listError) {
-                console.error("Failed to list models:", listError);
-            }
-        }
-
         const result = streamText({
             model: google('gemini-1.5-flash'),
             messages: await convertToModelMessages(messages),
@@ -43,22 +31,7 @@ export async function POST(req: Request) {
         return result.toUIMessageStreamResponse();
     } catch (error: any) {
         console.error("Error in chat API:", error);
-
-        // DEBUG: Fetch models to return to client for debugging
-        let availableModels = [];
-        const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-        if (apiKey) {
-            try {
-                const modelsResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-                const modelsData = await modelsResponse.json();
-                availableModels = modelsData.models || [];
-            } catch (e) { console.error("Could not list models", e); }
-        }
-
-        return new Response(JSON.stringify({
-            error: error.message,
-            debug_available_models: availableModels
-        }), {
+        return new Response(JSON.stringify({ error: 'An error occurred processing your request.' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
         });
