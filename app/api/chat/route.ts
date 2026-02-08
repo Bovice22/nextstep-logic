@@ -41,9 +41,24 @@ export async function POST(req: Request) {
         });
 
         return result.toUIMessageStreamResponse();
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error in chat API:", error);
-        return new Response(JSON.stringify({ error: 'An error occurred processing your request.' }), {
+
+        // DEBUG: Fetch models to return to client for debugging
+        let availableModels = [];
+        const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+        if (apiKey) {
+            try {
+                const modelsResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                const modelsData = await modelsResponse.json();
+                availableModels = modelsData.models || [];
+            } catch (e) { console.error("Could not list models", e); }
+        }
+
+        return new Response(JSON.stringify({
+            error: error.message,
+            debug_available_models: availableModels
+        }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
         });
