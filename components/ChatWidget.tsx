@@ -12,8 +12,21 @@ function cn(...inputs: ClassValue[]) {
 
 export default function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false);
-    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+    const { messages, sendMessage, status } = useChat();
+    const [input, setInput] = useState('');
+    const isLoading = status === 'submitted' || status === 'streaming';
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInput(e.target.value);
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim()) return;
+        await sendMessage({ role: 'user', content: input });
+        setInput('');
+    };
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
