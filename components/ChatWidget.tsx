@@ -3,6 +3,8 @@
 import { useChat, type UIMessage } from '@ai-sdk/react';
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -95,14 +97,31 @@ export default function ChatWidget() {
                             </div>
                             <div
                                 className={cn(
-                                    "p-3 rounded-2xl max-w-[80%]",
+                                    "p-3 rounded-2xl max-w-[80%] overflow-hidden",
                                     m.role === 'user'
                                         ? "bg-primary text-white rounded-tr-sm"
                                         : "bg-white/5 text-slate-200 border border-white/10 rounded-tl-sm"
                                 )}
                             >
                                 {m.parts.filter(p => p.type === 'text').map((p, i) => (
-                                    <span key={i}>{p.text}</span>
+                                    <div key={i} className="prose prose-invert prose-sm max-w-none break-words leading-relaxed">
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                                                ul: ({ children }) => <ul className="list-disc ml-4 mb-2 space-y-1">{children}</ul>,
+                                                ol: ({ children }) => <ol className="list-decimal ml-4 mb-2 space-y-1">{children}</ol>,
+                                                li: ({ children }) => <li>{children}</li>,
+                                                h1: ({ children }) => <h1 className="text-sm font-bold mb-2 mt-2">{children}</h1>,
+                                                h2: ({ children }) => <h2 className="text-sm font-bold mb-2 mt-2">{children}</h2>,
+                                                h3: ({ children }) => <h3 className="text-sm font-bold mb-1 mt-2 uppercase text-xs tracking-wider opacity-80">{children}</h3>,
+                                                code: ({ children }) => <code className="bg-black/30 px-1 py-0.5 rounded text-xs font-mono">{children}</code>,
+                                                strong: ({ children }) => <span className="font-bold text-white">{children}</span>,
+                                            }}
+                                        >
+                                            {p.text}
+                                        </ReactMarkdown>
+                                    </div>
                                 ))}
                             </div>
                         </div>
