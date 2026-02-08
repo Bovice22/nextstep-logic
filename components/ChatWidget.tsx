@@ -12,7 +12,7 @@ function cn(...inputs: ClassValue[]) {
 
 export default function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false);
-    const { messages, sendMessage, status } = useChat();
+    const { messages, sendMessage, status, error, regenerate } = useChat();
     const [input, setInput] = useState('');
     const isLoading = status === 'submitted' || status === 'streaming';
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -120,6 +120,13 @@ export default function ChatWidget() {
                     )}
                     <div ref={messagesEndRef} />
                 </div>
+
+                {error && (
+                    <div className="mx-4 mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-200 text-xs flex items-center justify-between">
+                        <span>Error: {error.message}</span>
+                        <button onClick={() => reload()} className="text-red-400 hover:text-red-300 underline ml-2">Retry</button>
+                    </div>
+                )}
 
                 {/* Input */}
                 <form onSubmit={handleSubmit} className="p-4 border-t border-white/10 bg-black/20">
