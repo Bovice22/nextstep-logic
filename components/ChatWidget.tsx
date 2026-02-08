@@ -124,7 +124,7 @@ export default function ChatWidget() {
                 {error && (
                     <div className="mx-4 mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-200 text-xs flex items-center justify-between">
                         <span>Error: {error.message}</span>
-                        <button onClick={() => reload()} className="text-red-400 hover:text-red-300 underline ml-2">Retry</button>
+                        <button onClick={() => regenerate()} className="text-red-400 hover:text-red-300 underline ml-2">Retry</button>
                     </div>
                 )}
 
