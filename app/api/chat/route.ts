@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
     const result = streamText({
         model: google('gemini-1.5-flash'),
-        messages: convertToModelMessages(messages),
+        messages: await convertToModelMessages(messages),
         system: `You are a helpful AI assistant for NextStep Logic, an automation agency.
     
     Your goal is to help users understand how NextStep Logic can help them automate their business.
