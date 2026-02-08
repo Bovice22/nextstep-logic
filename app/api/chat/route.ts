@@ -1,5 +1,5 @@
 import { google } from '@ai-sdk/google';
-import { streamText, convertToCoreMessages } from 'ai';
+import { streamText, convertToModelMessages } from 'ai';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
     const result = streamText({
         model: google('gemini-1.5-flash'),
-        messages: convertToCoreMessages(messages),
+        messages: convertToModelMessages(messages),
         system: `You are a helpful AI assistant for NextStep Logic, an automation agency.
     
     Your goal is to help users understand how NextStep Logic can help them automate their business.
