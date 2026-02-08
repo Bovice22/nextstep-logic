@@ -1,39 +1,20 @@
-import { google } from '@ai-sdk/google';
-import { streamText, convertToModelMessages } from 'ai';
+import { systemPrompt } from '../../knowledge';
 
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30;
+// ... (existing code)
 
-export async function POST(req: Request) {
-    const { messages } = await req.json();
+try {
+    const result = streamText({
+        model: google('gemini-flash-latest'),
+        messages: await convertToModelMessages(messages),
+        system: systemPrompt,
+    });
 
-    try {
-        const result = streamText({
-            model: google('gemini-flash-latest'),
-            messages: await convertToModelMessages(messages),
-            system: `You are a helpful AI assistant for NextStep Logic, an automation agency.
-        
-        Your goal is to help users understand how NextStep Logic can help them automate their business.
-        
-        Key Information about NextStep Logic:
-        - We build intelligent systems that automate repetitive work.
-        - We help small businesses grow without adding overhead.
-        - We offer services like: AI website assistants, automated lead responses, workflow automation, and business insights.
-        - We are NOT just selling tools; we build custom solutions.
-        - Target audience: Service-based businesses, event venues, contractors, retail.
-        
-        Tone: Professional, helpful, concise, and slightly technical but accessible.
-        
-        If asked about pricing, say that solutions are custom-built and they should schedule a consultation.
-        If asked to schedule a consultation, direct them to the "Schedule Consultation" button or the contact section.`,
-        });
-
-        return result.toUIMessageStreamResponse();
-    } catch (error: any) {
-        console.error("Error in chat API:", error);
-        return new Response(JSON.stringify({ error: 'An error occurred processing your request.' }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' },
-        });
-    }
+    return result.toUIMessageStreamResponse();
+} catch (error: any) {
+    console.error("Error in chat API:", error);
+    return new Response(JSON.stringify({ error: 'An error occurred processing your request.' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+    });
+}
 }
