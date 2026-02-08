@@ -18,7 +18,7 @@ export default function Home() {
                         <div className="flex items-center gap-2">
                             <div className="relative w-32 h-10">
                                 <Image
-                                    src="/Full Color.png"
+                                    src="/All White.png"
                                     alt="NextStep Logic Logo"
                                     fill
                                     className="object-contain"
@@ -310,7 +310,7 @@ export default function Home() {
                             <div className="flex items-center gap-2 mb-6">
                                 <div className="relative w-32 h-10">
                                     <Image
-                                        src="/Full Color.png"
+                                        src="/All White.png"
                                         alt="NextStep Logic Logo"
                                         fill
                                         className="object-contain"
