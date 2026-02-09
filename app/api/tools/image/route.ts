@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { experimental_generateImage } from 'ai';
-import { google } from '@ai-sdk/google';
 import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
@@ -39,29 +37,59 @@ export async function POST(req: NextRequest) {
         }
 
         // ---------------------------------------------------------
-        // Generate Image (Nano Banana Pro)
+        // Generate Image (Nano Banana Pro via direct REST)
         // ---------------------------------------------------------
         let base64Image: string | undefined;
 
         try {
-            // VERIFIED MODEL ID: nano-banana-pro-preview
-            const { image } = await experimental_generateImage({
-                model: google.image('nano-banana-pro-preview'),
-                prompt: prompt,
-                n: 1,
-                size: '1024x1024',
-                aspectRatio: '1:1',
+            const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+            // Trying the standard name for Nano Banana Pro
+            const model = "gemini-3-pro-image-preview";
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: `Generate a high-quality image. Prompt: ${prompt}` }]
+                    }]
+                })
             });
-            base64Image = image.base64;
-            console.log("SUCCESS: Generated with Nano Banana Pro");
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error?.message || `Google API error: ${response.status}`);
+            }
+
+            // Gemini image models return the image as a part in the contents
+            // We search for any part containing data with a mimeType starting with 'image'
+            const parts = data.candidates?.[0]?.content?.parts;
+            if (parts) {
+                for (const part of parts) {
+                    if (part.inlineData?.mimeType?.startsWith("image/")) {
+                        base64Image = part.inlineData.data;
+                        console.log(`SUCCESS: Generated image with ${model} (${part.inlineData.mimeType})`);
+                        break;
+                    }
+                }
+            }
+
+            if (!base64Image) {
+                // Specific error if they gave us text back instead of an image
+                const textPart = parts?.find((p: any) => p.text);
+                if (textPart) {
+                    console.warn("Model returned text instead of image:", textPart.text);
+                    throw new Error("The AI returned a text response instead of an image. Quality check failed.");
+                }
+                throw new Error("No image data found in Nano Banana Pro response.");
+            }
 
         } catch (googleError: any) {
             console.error("Nano Banana Pro Error:", googleError.message);
 
-            // If the user wants Nano Banana Pro, we should probably fail if it's not working
-            // rather than falling back to low quality silently. 
-            // But for now, I'll keep a FAST fallback and log it clearly.
-
+            // FAST FALLBACK: Pollinations.ai (Flux/SD)
             const encodedPrompt = encodeURIComponent(prompt + " high quality, detailed, 8k, vibrant");
             const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
 
