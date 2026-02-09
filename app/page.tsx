@@ -7,63 +7,10 @@ import Image from 'next/image';
 
 export default function Home() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [paidToolsOpen, setPaidToolsOpen] = useState(false);
 
     return (
         <div className="flex flex-col min-h-screen">
-            {/* Header */}
-            <header className="sticky top-0 z-50 w-full glass-panel border-b border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        {/* Logo */}
-                        <div className="flex items-center gap-2">
-                            <div className="relative w-32 h-10">
-                                <Image
-                                    src="/All White.png"
-                                    alt="NextStep Logic Logo"
-                                    fill
-                                    className="object-contain"
-                                    priority
-                                />
-                            </div>
-                        </div>
-
-                        {/* Desktop Nav */}
-                        <nav className="hidden md:flex items-center gap-8">
-                            <Link href="#problem" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">The Problem</Link>
-                            <Link href="#services" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">Services</Link>
-                            <Link href="#how-it-works" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">How It Works</Link>
-                            <Link href="#who-we-help" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">Who We Help</Link>
-                        </nav>
-
-                        {/* CTA */}
-                        <div className="flex items-center gap-4">
-                            <Link href="#contact" className="hidden md:flex bg-primary hover:bg-primary/90 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-all shadow-[0_0_20px_rgba(56,56,250,0.4)] border border-primary/50">
-                                Schedule Consultation
-                            </Link>
-                            {/* Mobile menu button */}
-                            <button
-                                className="md:hidden p-2 text-slate-300 hover:text-white"
-                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            >
-                                <span className="material-symbols-outlined">menu</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {/* Mobile Menu Dropdown */}
-                {mobileMenuOpen && (
-                    <div className="md:hidden glass-panel border-b border-white/10 p-4 absolute w-full top-16 left-0 flex flex-col gap-4">
-                        <Link href="#problem" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>The Problem</Link>
-                        <Link href="#services" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Services</Link>
-                        <Link href="#how-it-works" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>How It Works</Link>
-                        <Link href="#who-we-help" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Who We Help</Link>
-                        <Link href="#contact" className="bg-primary text-white text-sm font-bold px-5 py-2.5 rounded-lg text-center" onClick={() => setMobileMenuOpen(false)}>
-                            Schedule Consultation
-                        </Link>
-                    </div>
-                )}
-            </header>
-
             <main className="flex-grow">
                 {/* Hero Section */}
                 <section className="relative pt-20 pb-32 overflow-hidden">
