@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Image as ImageIcon, Sparkles, Download, Loader2 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -15,6 +15,18 @@ export default function ImageGeneratorPage() {
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [remaining, setRemaining] = useState<number | null>(null);
+    const [elapsedTime, setElapsedTime] = useState(0);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (isGenerating) {
+            setElapsedTime(0);
+            interval = setInterval(() => {
+                setElapsedTime(prev => prev + 1);
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [isGenerating]);
 
     const handleGenerate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -123,7 +135,11 @@ export default function ImageGeneratorPage() {
                                                 <Sparkles size={24} className="text-purple-500 animate-pulse" />
                                             </div>
                                         </div>
-                                        <p className="mt-6 text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-purple-500 font-bold tracking-widest animate-pulse">CREATING MAGIC...</p>
+                                        <p className="mt-6 text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-purple-500 font-bold tracking-widest animate-pulse uppercase">Creating Magic...</p>
+                                        <div className="mt-4 flex flex-col items-center gap-1">
+                                            <p className="text-white/60 text-xs font-medium">Estimated wait: ~10s</p>
+                                            <p className="text-brand-primary text-lg font-mono font-bold">{elapsedTime}s</p>
+                                        </div>
                                     </div>
                                 )}
 
