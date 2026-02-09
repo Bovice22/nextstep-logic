@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { experimental_generateImage } from 'ai';
-import { google } from '@ai-sdk/google';
 import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
@@ -33,23 +31,25 @@ export async function POST(req: NextRequest) {
 
         if (usage.count >= 5) {
             return NextResponse.json(
-                { error: 'Daily limit reached (5/5). Try again tomorrow!' },
+                { error: 'Daily limit reached (5/5). Come back tomorrow!' },
                 { status: 429 }
             );
         }
 
         // ---------------------------------------------------------
-        // Generate Image (Google Imagen 3 via AI SDK)
+        // Generate Image (Via Pollinations.ai - Free/No Key)
         // ---------------------------------------------------------
-        // Note: 'imagen-3.0-generate-001' is the model ID for Imagen 3 on Vertex/AI Studio
-        // If this specific model ID isn't available on the API key tier yet, we might need to fallback or catch.
-        const { image } = await experimental_generateImage({
-            model: google.image('imagen-3.0-generate-001'),
-            prompt: prompt,
-            n: 1,
-            size: '1024x1024',
-            aspectRatio: '1:1',
-        });
+        // Using Pollinations.ai which provides free access to Flux/SD models
+        const encodedPrompt = encodeURIComponent(prompt + " high quality, detailed, 8k, vibrant");
+        const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
+
+        const imageRes = await fetch(imageUrl);
+        if (!imageRes.ok) {
+            throw new Error("Failed to generate image via provider.");
+        }
+
+        const arrayBuffer = await imageRes.arrayBuffer();
+        const base64 = Buffer.from(arrayBuffer).toString('base64');
 
         // ---------------------------------------------------------
         // Update Limit & Return
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
         });
 
         return NextResponse.json({
-            image: image.base64,
+            image: base64,
             remaining: 5 - usage.count
         });
 
