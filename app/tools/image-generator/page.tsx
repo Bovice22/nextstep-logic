@@ -108,9 +108,9 @@ export default function ImageGeneratorPage() {
                                         <div className="w-24 h-24 bg-gradient-to-tr from-brand-primary/20 to-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5 group-hover/card:scale-110 transition-transform duration-500">
                                             <ImageIcon size={40} className="text-white/50" />
                                         </div>
-                                        <h3 className="text-white font-bold text-lg mb-2">Ready to Imagine?</h3>
+                                        <h3 className="text-white font-bold text-lg mb-2">Nano Banana Pro</h3>
                                         <p className="text-slate-500 text-sm max-w-xs mx-auto">
-                                            Enter a prompt below to generate a unique image powered by Google Imagen.
+                                            Enter a prompt to generate professional grade visuals in seconds.
                                         </p>
                                     </div>
                                 )}
@@ -187,7 +187,7 @@ export default function ImageGeneratorPage() {
                                         )}
                                     </div>
                                     <div className="text-slate-600">
-                                        Powered by Google
+                                        Powered by Nano Banana Pro
                                     </div>
                                 </div>
                             </div>

@@ -33,39 +33,40 @@ export async function POST(req: NextRequest) {
 
         if (usage.count >= 5) {
             return NextResponse.json(
-                { error: 'Daily limit reached (5/5). Come back tomorrow!' },
+                { error: 'Daily limit reached (5/5). Try again tomorrow!' },
                 { status: 429 }
             );
         }
 
         // ---------------------------------------------------------
-        // Generate Image (Dual Strategy: Google -> Fallback)
+        // Generate Image (Nano Banana Pro Strategy)
         // ---------------------------------------------------------
         let base64Image: string | undefined;
 
         try {
-            // STRATEGY 1: Try Google Imagen 3 (Paid/Preview Tier)
-            // Note: This requires the specific model to be enabled on the API key.
+            // PRIMARY: Nano Banana Pro (Gemini 3 Pro Image)
+            // This is the high-speed, high-quality model for paid tiers.
             const { image } = await experimental_generateImage({
-                model: google.image('imagen-3.0-generate-001'),
+                model: google.image('gemini-3-pro-image-preview'),
                 prompt: prompt,
                 n: 1,
                 size: '1024x1024',
                 aspectRatio: '1:1',
             });
             base64Image = image.base64;
-            console.log("Generated with Google Imagen 3");
+            console.log("Successfully generated with Nano Banana Pro (gemini-3-pro-image-preview)");
 
         } catch (googleError: any) {
-            console.warn("Google Imagen failed (likely private preview restriction), falling back to Pollinations:", googleError.message);
+            console.warn("Nano Banana Pro failed, attempting fast fallback:", googleError.message);
 
-            // STRATEGY 2: Fallback to Pollinations.ai (Free - Flux/SD)
+            // FALLBACK: Pollinations.ai (Flux/SD) - Fast & Free
+            // We use this to ensure the user ALWAYS gets an image even if the Google Preview is down.
             const encodedPrompt = encodeURIComponent(prompt + " high quality, detailed, 8k, vibrant");
             const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
 
             const imageRes = await fetch(imageUrl);
             if (!imageRes.ok) {
-                throw new Error(`Fallback generation failed: ${imageRes.statusText}`);
+                throw new Error(`Generation failed: ${imageRes.statusText}`);
             }
 
             const arrayBuffer = await imageRes.arrayBuffer();
@@ -73,7 +74,7 @@ export async function POST(req: NextRequest) {
         }
 
         if (!base64Image) {
-            throw new Error("Failed to generate image with any provider.");
+            throw new Error("Failed to generate image.");
         }
 
         // ---------------------------------------------------------
@@ -83,7 +84,7 @@ export async function POST(req: NextRequest) {
         cookieStore.set('nextstep-gen-limit', JSON.stringify(usage), {
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
             path: '/',
-            httpOnly: true, // Secure, client can't tamper easily
+            httpOnly: true,
             sameSite: 'strict'
         });
 
@@ -95,7 +96,7 @@ export async function POST(req: NextRequest) {
     } catch (error: any) {
         console.error("Image Generation Error:", error);
         return NextResponse.json(
-            { error: error.message || 'Failed to generate image. The AI might be busy.' },
+            { error: error.message || 'The AI is currently busy. Please try again in a moment.' },
             { status: 500 }
         );
     }
