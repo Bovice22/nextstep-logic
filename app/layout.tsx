@@ -8,6 +8,11 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'NextStep Logic - AI Automation That Helps Your Business Run Better',
     description: 'NextStep Logic helps small businesses automate customer communication, streamline workflows, and operate more efficiently using practical AI solutions.',
+    icons: {
+        icon: '/full-color-logo.png',
+        shortcut: '/full-color-logo.png',
+        apple: '/full-color-logo.png',
+    },
 };
 
 export default function RootLayout({
