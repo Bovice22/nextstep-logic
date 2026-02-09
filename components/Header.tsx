@@ -83,12 +83,20 @@ export default function Header() {
                                 onMouseLeave={() => setActiveMenu(null)}
                             >
                                 <div className="p-1">
+
                                     <Link href="/tools/email" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
                                         <div className="font-semibold text-white group-hover/item:text-accent-cyan flex items-center gap-2">
                                             <span className="material-symbols-outlined text-accent-cyan">mail</span>
                                             Email Summarizer
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">Quickly summarize long threads</div>
+                                    </Link>
+                                    <Link href="/tools/image-generator" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
+                                        <div className="font-semibold text-white group-hover/item:text-purple-400 flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-purple-400">image</span>
+                                            AI Image Creator
+                                        </div>
+                                        <div className="text-xs text-slate-500 mt-0.5">Generate stunning visuals</div>
                                     </Link>
                                 </div>
                             </div>
@@ -118,7 +126,10 @@ export default function Header() {
                     <Link href="/#how-it-works" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>How It Works</Link>
                     <Link href="/#who-we-help" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Who We Help</Link>
                     <Link href="/tools/email" className="text-accent-cyan hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                        <span className="material-symbols-outlined text-sm">construction</span> Free Tools
+                        <span className="material-symbols-outlined text-sm">mail</span> Free Tools: Email
+                    </Link>
+                    <Link href="/tools/image-generator" className="text-purple-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                        <span className="material-symbols-outlined text-sm">image</span> Free Tools: Image Gen
                     </Link>
                     <Link href="/tools/booking" className="text-accent-pink hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
                         <span className="material-symbols-outlined text-sm">workspace_premium</span> Paid Tools: Bookings
