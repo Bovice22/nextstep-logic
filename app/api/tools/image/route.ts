@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
     try {
-        const { prompt } = await req.json();
+        const { prompt, image, mimeType } = await req.json();
 
         if (!prompt) {
             return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
@@ -40,22 +40,33 @@ export async function POST(req: NextRequest) {
         */
 
         // ---------------------------------------------------------
-        // Generate Image (Nano Banana Pro via direct REST)
+        // Generate/Edit Image (Nano Banana via direct REST)
         // ---------------------------------------------------------
         let base64Image: string | undefined;
 
         try {
             const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-            // Trying the standard name for Nano Banana Pro
-            const model = "gemini-3-pro-image-preview";
+            // Using Gemini 2.5 Flash Image (Nano Banana) for faster generation
+            const model = "gemini-2.5-flash-image";
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+            const googleParts: any[] = [{ text: image ? `Edit this image based on the prompt: ${prompt}` : `Generate a high-quality image. Prompt: ${prompt}` }];
+
+            if (image && mimeType) {
+                googleParts.unshift({
+                    inlineData: {
+                        mimeType: mimeType,
+                        data: image
+                    }
+                });
+            }
 
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{
-                        parts: [{ text: `Generate a high-quality image. Prompt: ${prompt}` }]
+                        parts: googleParts
                     }]
                 })
             });
@@ -86,11 +97,11 @@ export async function POST(req: NextRequest) {
                     console.warn("Model returned text instead of image:", textPart.text);
                     throw new Error("The AI returned a text response instead of an image. Quality check failed.");
                 }
-                throw new Error("No image data found in Nano Banana Pro response.");
+                throw new Error("No image data found in Nano Banana response.");
             }
 
         } catch (googleError: any) {
-            console.error("Nano Banana Pro Error:", googleError.message);
+            console.error("Nano Banana Error:", googleError.message);
 
             // FAST FALLBACK: Pollinations.ai (Flux/SD)
             const encodedPrompt = encodeURIComponent(prompt + " high quality, detailed, 8k, vibrant");

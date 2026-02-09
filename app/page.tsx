@@ -13,7 +13,7 @@ export default function Home() {
         <div className="flex flex-col min-h-screen">
             <main className="flex-grow">
                 {/* Hero Section */}
-                <section className="relative pt-20 pb-32 overflow-hidden">
+                <section className="relative pt-24 lg:pt-32 pb-32 overflow-hidden">
                     {/* Background Gradients */}
                     <div className="absolute inset-0 bg-hero-glow opacity-60 pointer-events-none"></div>
                     <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none mix-blend-screen"></div>
@@ -37,36 +37,85 @@ export default function Home() {
                                 </div>
                             </div>
 
-                            {/* Visual Content */}
-                            <div className="flex-1 w-full max-w-[600px] lg:max-w-none perspective-1000">
-                                <div className="relative w-full aspect-square lg:aspect-[4/3]">
-                                    {/* Main Glass Card */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-surface-dark to-[#1a1a3a] rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col">
-                                        <div className="h-10 border-b border-white/5 flex items-center px-4 gap-2 bg-black/20">
-                                            <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                                            <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                                            <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
-                                        </div>
-                                        <div className="p-6 flex-1 relative flex items-center justify-center">
-                                            <div className="text-center">
-                                                <span className="material-symbols-outlined text-6xl text-primary mb-4 animate-pulse-blue">smart_toy</span>
-                                                <div className="text-white font-bold text-xl">System Active</div>
-                                                <div className="text-slate-400 text-sm mt-2">Automating workflows...</div>
-                                            </div>
+                            {/* Visual Content - Neural Network Animation */}
+                            <div className="flex-1 w-full max-w-[600px] lg:max-w-none relative perspective-1000 group">
+                                <div className="relative w-full aspect-square lg:aspect-[4/3] transform transition-transform duration-700 hover:rotate-y-12 hover:rotate-x-12 preserve-3d">
+
+                                    {/* Central AI Core */}
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-primary/20 rounded-full blur-xl animate-pulse-slow z-10"></div>
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-br from-primary to-accent-cyan rounded-full shadow-[0_0_50px_rgba(56,56,250,0.6)] flex items-center justify-center z-20 animate-float">
+                                        <div className="w-20 h-20 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
+                                            <span className="material-symbols-outlined text-4xl text-white animate-spin-slow">neurology</span>
                                         </div>
                                     </div>
-                                    {/* Floating Card 1 */}
-                                    <div className="absolute -bottom-6 -left-6 bg-surface-dark/90 backdrop-blur-xl p-4 rounded-xl border border-white/10 shadow-2xl w-48 animate-bounce" style={{ animationDuration: '3s' }}>
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <div className="bg-green-500/20 p-2 rounded-lg text-green-400">
-                                                <span className="material-symbols-outlined text-sm">rocket_launch</span>
-                                            </div>
-                                            <div>
-                                                <div className="text-white text-sm font-bold">Efficiency</div>
-                                                <div className="text-green-400 text-xs font-bold">+245%</div>
-                                            </div>
+
+                                    {/* Orbiting Data Nodes */}
+                                    {[...Array(6)].map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className="absolute w-12 h-12 bg-surface-dark/80 backdrop-blur-md border border-white/10 rounded-xl flex items-center justify-center shadow-lg animate-orbit"
+                                            style={{
+                                                top: `${50 + 35 * Math.sin(i * (Math.PI / 3))}%`,
+                                                left: `${50 + 35 * Math.cos(i * (Math.PI / 3))}%`,
+                                                animationDelay: `${i * 0.5}s`,
+                                                transform: 'translate(-50%, -50%)' // Center the item relative to its position
+                                            }}
+                                        >
+                                            {/* Icons for Nodes */}
+                                            {[
+                                                'mail', 'database', 'security',
+                                                'schedule', 'payments', 'analytics'
+                                            ][i] && (
+                                                    <span className="material-symbols-outlined text-primary text-sm">
+                                                        {[
+                                                            'mail', 'database', 'security',
+                                                            'schedule', 'payments', 'analytics'
+                                                        ][i]}
+                                                    </span>
+                                                )}
+                                        </div>
+                                    ))}
+
+                                    {/* Data Flow Lines (SVG) */}
+                                    <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-40">
+                                        <defs>
+                                            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stopColor="transparent" />
+                                                <stop offset="50%" stopColor="#6366f1" />
+                                                <stop offset="100%" stopColor="transparent" />
+                                            </linearGradient>
+                                        </defs>
+                                        {[...Array(6)].map((_, i) => {
+                                            const angle = (i * 60) * (Math.PI / 180);
+                                            const radius = 35;
+                                            const x2 = 50 + radius * Math.cos(angle);
+                                            const y2 = 50 + radius * Math.sin(angle);
+
+                                            return (
+                                                <line
+                                                    key={i}
+                                                    x1="50%" y1="50%"
+                                                    x2={`${x2}%`}
+                                                    y2={`${y2}%`}
+                                                    stroke="url(#lineGradient)"
+                                                    strokeWidth="2"
+                                                    strokeDasharray="10,10"
+                                                    className="animate-dash-flow"
+                                                    style={{ animationDuration: `${3 + i * 0.5}s` }}
+                                                />
+                                            )
+                                        })}
+                                    </svg>
+
+                                    {/* Floating Intelligence Badge */}
+                                    <div className="absolute -bottom-4 right-0 bg-white/5 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-lg flex items-center gap-3 animate-bounce-slow shadow-2xl z-30">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                        <div className="text-xs font-bold text-white tracking-wide">
+                                            SYSTEM OPTIMIZING
+                                            <span className="block text-[10px] text-slate-400 font-normal">98.4% Efficiency</span>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -296,6 +345,40 @@ export default function Home() {
                     </div>
                 </div>
             </footer>
-        </div>
+
+            <style jsx global>{`
+                @keyframes orbit {
+                    0% { transform: translate(-50%, -50%) translateY(0px); }
+                    50% { transform: translate(-50%, -50%) translateY(-10px); }
+                    100% { transform: translate(-50%, -50%) translateY(0px); }
+                }
+                @keyframes dash-flow {
+                    to { stroke-dashoffset: -100; }
+                }
+                @keyframes float {
+                    0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+                    50% { transform: translate(-50%, -50%) translateY(-15px); }
+                }
+                @keyframes spin-slow {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+                .animate-orbit {
+                    animation: orbit 4s ease-in-out infinite;
+                }
+                .animate-dash-flow {
+                    animation: dash-flow 2s linear infinite;
+                }
+                .animate-float {
+                    animation: float 6s ease-in-out infinite;
+                }
+                .animate-spin-slow {
+                    animation: spin-slow 12s linear infinite;
+                }
+                .preserve-3d {
+                    transform-style: preserve-3d;
+                }
+            `}</style>
+        </div >
     );
 }

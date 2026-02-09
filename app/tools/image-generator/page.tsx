@@ -16,6 +16,8 @@ export default function ImageGeneratorPage() {
     const [error, setError] = useState<string | null>(null);
     const [remaining, setRemaining] = useState<number | null>(null);
     const [elapsedTime, setElapsedTime] = useState(0);
+    const [sourceImage, setSourceImage] = useState<string | null>(null);
+    const [sourceMimeType, setSourceMimeType] = useState<string | null>(null);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -39,7 +41,11 @@ export default function ImageGeneratorPage() {
             const res = await fetch('/api/tools/image', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: prompt.trim() })
+                body: JSON.stringify({
+                    prompt: prompt.trim(),
+                    image: sourceImage,
+                    mimeType: sourceMimeType
+                })
             });
 
             const data = await res.json();
@@ -62,12 +68,36 @@ export default function ImageGeneratorPage() {
         }
     };
 
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            setError("Please upload an image file.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const result = reader.result as string;
+            const base64 = result.split(',')[1];
+            setSourceImage(base64);
+            setSourceMimeType(file.type);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const removeSourceImage = () => {
+        setSourceImage(null);
+        setSourceMimeType(null);
+    };
+
     return (
         <div className="min-h-[calc(100vh-4rem)] bg-[#030014] text-slate-200 overflow-hidden relative flex flex-col justify-center">
             {/* Background Vibrancy */}
             <div className="fixed inset-0 pointer-events-none">
-                <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-brand-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
-                <div className="absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse-slow delay-1000"></div>
+                <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse-slow"></div>
+                <div className="absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-fuchsia-600/20 rounded-full blur-[120px] animate-pulse-slow delay-1000"></div>
                 <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:radial-gradient(ellipse_at_center,white,transparent)] opacity-20"></div>
             </div>
 
@@ -76,14 +106,14 @@ export default function ImageGeneratorPage() {
 
                     {/* Left Column: Hero Text */}
                     <div className="text-center lg:text-left mb-12 lg:mb-0">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-brand-secondary mb-6 backdrop-blur-sm">
-                            <Sparkles size={16} className="text-yellow-400" />
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-yellow-500 font-bold">New Free Tool</span>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-purple-400 mb-6 backdrop-blur-sm">
+                            <Sparkles size={16} className="text-purple-400" />
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-purple-500 font-bold">Free AI Visuals</span>
                         </div>
 
                         <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl">
                             Dream It. <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-purple-500 to-pink-500 animate-gradient-x">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 animate-gradient-x">
                                 Create It.
                             </span>
                         </h1>
@@ -94,15 +124,15 @@ export default function ImageGeneratorPage() {
 
                         <div className="hidden lg:flex items-center gap-4 text-sm font-medium text-slate-500">
                             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
-                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
                                 Fast Generation
                             </div>
                             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
-                                <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                                <span className="w-2 h-2 rounded-full bg-fuchsia-500"></span>
                                 High Quality
                             </div>
                             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
-                                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span className="w-2 h-2 rounded-full bg-pink-500"></span>
                                 No Login Req.
                             </div>
                         </div>
@@ -110,17 +140,17 @@ export default function ImageGeneratorPage() {
 
                     {/* Right Column: Generator Interface */}
                     <div className="w-full">
-                        <div className="bg-[#0f0f15]/80 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_0_50px_-12px_rgba(124,58,237,0.25)] relative group/card transition-all hover:border-white/20">
+                        <div className="bg-[#0f0f15]/80 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_0_50px_-12px_rgba(168,85,247,0.25)] relative group/card transition-all hover:border-purple-500/30">
                             <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
 
                             {/* Image Display Area */}
                             <div className="aspect-square md:aspect-[4/3] w-full bg-[#05050A] relative flex items-center justify-center overflow-hidden border-b border-white/5">
                                 {!generatedImage && !isGenerating && (
                                     <div className="text-center p-8 relative z-10">
-                                        <div className="w-24 h-24 bg-gradient-to-tr from-brand-primary/20 to-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5 group-hover/card:scale-110 transition-transform duration-500">
+                                        <div className="w-24 h-24 bg-gradient-to-tr from-purple-500/20 to-fuchsia-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5 group-hover/card:scale-110 transition-transform duration-500">
                                             <ImageIcon size={40} className="text-white/50" />
                                         </div>
-                                        <h3 className="text-white font-bold text-lg mb-2">Nano Banana Pro</h3>
+                                        <h3 className="text-white font-bold text-lg mb-2">Nano Banana V2</h3>
                                         <p className="text-slate-500 text-sm max-w-xs mx-auto">
                                             Enter a prompt to generate professional grade visuals in seconds.
                                         </p>
@@ -178,11 +208,32 @@ export default function ImageGeneratorPage() {
                                         <button
                                             type="submit"
                                             disabled={isGenerating || !prompt.trim()}
-                                            className="bg-brand-primary hover:bg-brand-primary/90 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-brand-primary/25 hover:shadow-brand-primary/40 transition-all active:scale-95 disabled:opacity-50 disabled:shadow-none whitespace-nowrap flex items-center justify-center gap-2"
+                                            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-purple-900/40 transition-all active:scale-95 disabled:opacity-50 disabled:shadow-none whitespace-nowrap flex items-center justify-center gap-2"
                                         >
                                             {isGenerating ? <Loader2 className="animate-spin" size={20} /> : <Sparkles size={20} />}
-                                            <span className="hidden md:inline">Generate</span>
+                                            <span className="hidden md:inline">{sourceImage ? 'Edit' : 'Generate'}</span>
                                         </button>
+                                    </div>
+
+                                    {/* Image Upload Area */}
+                                    <div className="mt-4 flex flex-wrap gap-4 items-center">
+                                        {!sourceImage ? (
+                                            <label className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl cursor-pointer hover:bg-white/10 transition-colors text-sm font-medium text-slate-300">
+                                                <ImageIcon size={18} className="text-purple-400" />
+                                                Upload Photo to Edit
+                                                <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} />
+                                            </label>
+                                        ) : (
+                                            <div className="flex items-center gap-3 p-2 bg-purple-500/10 border border-purple-500/20 rounded-xl">
+                                                <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10">
+                                                    <img src={`data:${sourceMimeType};base64,${sourceImage}`} alt="Upload preview" className="w-full h-full object-cover" />
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-bold text-purple-400 uppercase tracking-tighter">Photo Attached</span>
+                                                    <button onClick={removeSourceImage} className="text-[10px] text-slate-400 hover:text-red-400 transition-colors text-left uppercase font-bold">Remove</button>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                     {error && (
                                         <p className="absolute -bottom-6 left-2 text-red-400 text-xs font-medium flex items-center gap-1">
@@ -199,7 +250,7 @@ export default function ImageGeneratorPage() {
                                         </span>
                                     </div>
                                     <div className="text-slate-600">
-                                        Powered by Nano Banana Pro
+                                        Powered by Nano Banana V2
                                     </div>
                                 </div>
                             </div>

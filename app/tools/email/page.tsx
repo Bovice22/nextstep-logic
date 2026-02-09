@@ -43,11 +43,11 @@ export default function EmailToolPage() {
 
                 {/* Header */}
                 <div className="text-center space-y-4">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/20 text-primary mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-500 mb-4 ring-1 ring-amber-500/30">
                         <Mail size={32} />
                     </div>
                     <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                        Inbox <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-pink">Intelligence</span>
+                        Inbox <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Intelligence</span>
                     </h1>
                     <p className="text-xl text-slate-400 max-w-2xl mx-auto">
                         Paste a messy email thread below. AI will instantly summarize it, extract action items, and write a reply for you.
@@ -55,7 +55,7 @@ export default function EmailToolPage() {
                 </div>
 
                 {/* Input Section */}
-                <div className="bg-surface-dark border border-white/10 rounded-3xl p-1 shadow-2xl">
+                <div className="bg-surface-dark border border-white/10 rounded-3xl p-1 shadow-2xl transition-all hover:border-amber-500/30">
                     <form onSubmit={handleSubmit} className="bg-black/20 rounded-[22px] p-6 md:p-8 space-y-6">
                         <textarea
                             value={content}
@@ -68,7 +68,7 @@ export default function EmailToolPage() {
                             <button
                                 type="submit"
                                 disabled={loading || !content.trim()}
-                                className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-black px-8 py-4 rounded-xl font-bold transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg shadow-amber-500/20"
                             >
                                 {loading ? (
                                     <>
@@ -90,20 +90,20 @@ export default function EmailToolPage() {
                         {/* BLUF & Actions */}
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="bg-surface-dark border border-white/10 rounded-3xl p-6 md:p-8">
-                                <h3 className="text-accent-cyan font-bold mb-4 flex items-center gap-2">
+                                <h3 className="text-amber-400 font-bold mb-4 flex items-center gap-2">
                                     <CheckCircle size={20} /> BLUF (Bottom Line)
                                 </h3>
                                 <p className="text-slate-300 text-lg leading-relaxed">{result.bluf}</p>
                             </div>
 
                             <div className="bg-surface-dark border border-white/10 rounded-3xl p-6 md:p-8">
-                                <h3 className="text-accent-pink font-bold mb-4 flex items-center gap-2">
+                                <h3 className="text-orange-400 font-bold mb-4 flex items-center gap-2">
                                     <CheckCircle size={20} /> Action Items
                                 </h3>
                                 <ul className="space-y-3">
                                     {result.action_items.map((item: string, i: number) => (
                                         <li key={i} className="flex items-start gap-3 text-slate-300">
-                                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent-pink flex-shrink-0" />
+                                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500 flex-shrink-0" />
                                             {item}
                                         </li>
                                     ))}
@@ -114,7 +114,7 @@ export default function EmailToolPage() {
                         {/* Draft Reply */}
                         <div className="bg-surface-dark border border-white/10 rounded-3xl p-6 md:p-8 relative group">
                             <div className="flex justify-between items-center mb-6">
-                                <h3 className="text-primary font-bold flex items-center gap-2">
+                                <h3 className="text-amber-500 font-bold flex items-center gap-2">
                                     <Mail size={20} /> Draft Reply
                                 </h3>
                                 <button

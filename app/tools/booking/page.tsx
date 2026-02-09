@@ -18,7 +18,7 @@ export default function BookingPage() {
                 <section className="relative pt-12 pb-10 overflow-hidden">
                     {/* Background Gradients */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,#f43f5e_0%,transparent_60%)] opacity-20 pointer-events-none"></div>
-                    <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none mx-auto"></div>
+                    <div className="absolute top-1/4 left-0 w-96 h-96 bg-accent-pink/10 rounded-full blur-3xl pointer-events-none mx-auto animate-pulse"></div>
 
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-accent-pink mb-4">

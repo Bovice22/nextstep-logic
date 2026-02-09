@@ -9,12 +9,12 @@ export default function Header() {
     const [activeMenu, setActiveMenu] = useState<'paid' | 'free' | null>(null);
 
     return (
-        <header className="sticky top-0 z-50 w-full glass-panel border-b border-white/10">
+        <header className="sticky top-0 z-50 w-full glass-panel border-b border-white/10 transition-all duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
+                <div className="flex items-center justify-between h-20 lg:h-24">
                     {/* Logo */}
                     <div className="flex items-center gap-2">
-                        <div className="relative w-32 h-10">
+                        <div className="relative w-48 h-12 lg:w-64 lg:h-16 hover:scale-105 transition-transform duration-300">
                             <Link href="/">
                                 <Image
                                     src="/All White.png"
@@ -28,7 +28,7 @@ export default function Header() {
                     </div>
 
                     {/* Desktop Nav */}
-                    <nav className="hidden md:flex items-center gap-8">
+                    <nav className="hidden md:flex items-center gap-4 lg:gap-8">
                         <Link href="/#problem" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">The Problem</Link>
                         <Link href="/#services" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">Services</Link>
                         <Link href="/#how-it-works" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">How It Works</Link>
@@ -63,6 +63,20 @@ export default function Header() {
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">24/7 Automated customer service</div>
                                     </Link>
+                                    <Link href="/tools/video-generator" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
+                                        <div className="font-semibold text-white group-hover/item:text-indigo-400 flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-indigo-400">movie</span>
+                                            AI Video Creator
+                                        </div>
+                                        <div className="text-xs text-slate-500 mt-0.5">Bring your ideas to life</div>
+                                    </Link>
+                                    <Link href="/tools/voice-ai" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
+                                        <div className="font-semibold text-white group-hover/item:text-emerald-400 flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-emerald-400">mic</span>
+                                            Voice AI Agent
+                                        </div>
+                                        <div className="text-xs text-slate-500 mt-0.5">Natural voice conversations</div>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -71,9 +85,9 @@ export default function Header() {
                             <button
                                 onClick={() => setActiveMenu(activeMenu === 'free' ? null : 'free')}
                                 onMouseEnter={() => setActiveMenu('free')}
-                                className="text-accent-cyan hover:text-white text-sm font-medium transition-colors flex items-center gap-1 focus:outline-none"
+                                className="text-slate-300 hover:text-white text-sm font-medium transition-colors flex items-center gap-1 focus:outline-none"
                             >
-                                <span className="material-symbols-outlined text-sm">construction</span> Free Tools
+                                <span className="material-symbols-outlined text-sm text-amber-400">construction</span> Free Tools
                                 <span className="material-symbols-outlined text-sm">expand_more</span>
                             </button>
 
@@ -83,10 +97,9 @@ export default function Header() {
                                 onMouseLeave={() => setActiveMenu(null)}
                             >
                                 <div className="p-1">
-
                                     <Link href="/tools/email" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
-                                        <div className="font-semibold text-white group-hover/item:text-accent-cyan flex items-center gap-2">
-                                            <span className="material-symbols-outlined text-accent-cyan">mail</span>
+                                        <div className="font-semibold text-white group-hover/item:text-amber-400 flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-amber-400">mail</span>
                                             Email Summarizer
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">Quickly summarize long threads</div>
@@ -125,14 +138,23 @@ export default function Header() {
                     <Link href="/#services" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Services</Link>
                     <Link href="/#how-it-works" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>How It Works</Link>
                     <Link href="/#who-we-help" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Who We Help</Link>
-                    <Link href="/tools/email" className="text-accent-cyan hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/tools/email" className="text-amber-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
                         <span className="material-symbols-outlined text-sm">mail</span> Free Tools: Email
                     </Link>
                     <Link href="/tools/image-generator" className="text-purple-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
                         <span className="material-symbols-outlined text-sm">image</span> Free Tools: Image Gen
                     </Link>
                     <Link href="/tools/booking" className="text-accent-pink hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                        <span className="material-symbols-outlined text-sm">workspace_premium</span> Paid Tools: Bookings
+                        <span className="material-symbols-outlined text-sm text-accent-pink">calendar_month</span> Paid Tools: Bookings
+                    </Link>
+                    <Link href="/tools/chatbot" className="text-accent-cyan hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                        <span className="material-symbols-outlined text-sm text-accent-cyan">smart_toy</span> Paid Tools: Chatbot
+                    </Link>
+                    <Link href="/tools/video-generator" className="text-indigo-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                        <span className="material-symbols-outlined text-sm text-indigo-400">movie</span> Paid Tools: Video Creator
+                    </Link>
+                    <Link href="/tools/voice-ai" className="text-emerald-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                        <span className="material-symbols-outlined text-sm text-emerald-400">mic</span> Paid Tools: Voice AI Agent
                     </Link>
                     <Link href="/#contact" className="bg-primary text-white text-sm font-bold px-5 py-2.5 rounded-lg text-center" onClick={() => setMobileMenuOpen(false)}>
                         Schedule Consultation
