@@ -178,13 +178,9 @@ export default function ImageGeneratorPage() {
                                 <div className="mt-6 flex items-center justify-between text-xs font-medium">
                                     <div className="flex items-center gap-2 text-slate-400">
                                         Credits:
-                                        {remaining !== null ? (
-                                            <span className={cn("text-white px-2 py-0.5 rounded bg-white/10", remaining === 0 ? "text-red-400 bg-red-400/10" : "text-green-400 bg-green-400/10")}>
-                                                {remaining}/5
-                                            </span>
-                                        ) : (
-                                            <span className="text-white px-2 py-0.5 rounded bg-white/10">5 Daily</span>
-                                        )}
+                                        <span className="text-white px-2 py-0.5 rounded bg-white/10">
+                                            Testing: Unlimited
+                                        </span>
                                     </div>
                                     <div className="text-slate-600">
                                         Powered by Nano Banana Pro

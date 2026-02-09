@@ -29,12 +29,15 @@ export async function POST(req: NextRequest) {
             }
         }
 
+        /* Removed limit for testing as per user request */
+        /*
         if (usage.count >= 5) {
             return NextResponse.json(
                 { error: 'Daily limit reached (5/5). Come back tomorrow!' },
                 { status: 429 }
             );
         }
+        */
 
         // ---------------------------------------------------------
         // Generate Image (Nano Banana Pro via direct REST)
