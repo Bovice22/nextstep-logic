@@ -10,7 +10,8 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
 const MODELS_TO_TRY = [
     "gemini-2.0-flash",
     "gemini-2.0-flash-exp",
-    "gemini-1.5-flash"         // Kept as fallback just in case
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b"
 ];
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -28,48 +29,50 @@ export async function POST(req: Request) {
 
         // Try the primary model with robust retries for Rate Limits
         for (const modelName of MODELS_TO_TRY) {
+            try {
+                console.log(`Trying model: ${modelName}`);
+                const model = genAI.getGenerativeModel({ model: modelName });
 
-            // Retry loop for 429 errors (Rate Limits)
-            for (let attempt = 1; attempt <= 3; attempt++) {
-                try {
-                    console.log(`Trying model: ${modelName} (Attempt ${attempt})`);
-                    const model = genAI.getGenerativeModel({ model: modelName });
+                const result = await model.generateContent({
+                    contents: [{ role: "user", parts: [{ text: message }] }],
+                    systemInstruction: `You are a helpful, concise Voice AI. 
+                    Keep your responses short (under 2 sentences). 
+                    Speak in a friendly, conversational tone.`
+                });
 
-                    const result = await model.generateContent({
-                        contents: [{ role: "user", parts: [{ text: message }] }],
-                        systemInstruction: `You are a helpful, concise Voice AI. 
-                        Keep your responses short (under 2 sentences). 
-                        Speak in a friendly, conversational tone.`
-                    });
+                const response = result.response;
+                const textPart = response.candidates?.[0].content.parts.find(p => p.text);
 
-                    const response = result.response;
-                    const textPart = response.candidates?.[0].content.parts.find(p => p.text);
+                if (textPart?.text) {
+                    responseText = textPart.text;
+                    console.log(`>>> SUCCESS: Generated response with ${modelName}`);
+                    break; // Break loop on success
+                }
+            } catch (err: any) {
+                const isRateLimit = err.message.includes("429") || err.message.includes("Too Many Requests");
+                const errorMsg = `Model ${modelName} failed: ${err.message}`;
+                console.warn(errorMsg);
+                errorLog.push(errorMsg);
 
-                    if (textPart?.text) {
-                        responseText = textPart.text;
-                        console.log(`>>> SUCCESS: Generated response with ${modelName}`);
-                        break; // Break retry loop
-                    }
-                } catch (err: any) {
-                    const isRateLimit = err.message.includes("429") || err.message.includes("Too Many Requests");
-                    const errorMsg = `Model ${modelName} attempt ${attempt} failed: ${err.message}`;
-                    console.warn(errorMsg);
-                    errorLog.push(errorMsg);
-
-                    if (isRateLimit && attempt < 3) {
-                        // Exponential backoff: 2s, 4s, etc.
-                        const waitTime = 2000 * attempt;
-                        console.log(`Rate limit hit. Waiting ${waitTime}ms before retry...`);
-                        await delay(waitTime);
-                        continue; // Retry
-                    } else {
-                        // If it's not a rate limit (e.g. 404), or we ran out of retries, throw to next model
-                        break;
-                    }
+                if (isRateLimit) {
+                    // If it's a rate limit, don't retry same model - move to next one immediately
+                    console.log(`Rate limit hit on ${modelName}. Switching to next model...`);
+                    continue;
+                } else {
+                    // For other errors, we also move to next model
+                    continue;
                 }
             }
+        }
 
-            if (responseText) break; // Break model loop if we have a response
+        if (responseText) {
+            // Success block moved outside loop
+            console.log("Voice AI Response Text:", responseText);
+
+            return NextResponse.json({
+                response: responseText,
+                audio: null
+            });
         }
 
         if (!responseText) {
