@@ -36,6 +36,8 @@ export default function VoiceAIPage() {
 
     const transcriptRef = useRef("");
 
+    const shouldContinueRef = useRef(false);
+
     // Sync state to ref to avoid stale closures
     useEffect(() => {
         selectedVoiceRef.current = selectedVoice;
@@ -72,13 +74,24 @@ export default function VoiceAIPage() {
                 // Trigger backend once they stop speaking, using the ref to get latest value
                 if (transcriptRef.current.trim()) {
                     handleSendMessage(transcriptRef.current);
+                } else if (shouldContinueRef.current) {
+                    // If they didn't say anything but loop is active, maybe restart? 
+                    // For now, let's stop to avoid infinite silence loops, or we could just restart.
+                    // A better UX might be to stop if no input, but let's stick to the request "continues listening".
+                    // However, silence causing loops is bad. Let's start listening again only if we had a response.
+                    // Actually, if onend fires with empty result, it usually means silence timeout.
+                    // Let's set shouldContinue to false to be safe, or just let it die.
+                    // Ideally, we only restart AFTER the AI Speaks.
                 }
             };
 
             recognitionRef.current!.onerror = (event: any) => {
                 console.error("Speech Recognition Error:", event.error);
-                setError(`Speech recognition error: ${event.error}`);
+                if (event.error !== 'no-speech') {
+                    setError(`Speech recognition error: ${event.error}`);
+                }
                 setIsListening(false);
+                shouldContinueRef.current = false; // Stop loop on error
             };
         }
 
@@ -128,28 +141,38 @@ export default function VoiceAIPage() {
         };
     }, []); // Empty dependency array to initialization only once
 
+    const startListening = () => {
+        setError(null);
+        setTranscript("");
+        transcriptRef.current = "";
+        setResponse("");
+
+        // Cancel any ongoing speech
+        if (synthRef.current) synthRef.current.cancel();
+        setIsSpeaking(false);
+
+        try {
+            recognitionRef.current?.start();
+            setIsListening(true);
+            shouldContinueRef.current = true; // Enable loop
+        } catch (e) {
+            console.error("Start Error:", e);
+            setIsListening(false);
+            shouldContinueRef.current = false;
+        }
+    }
+
+    const stopListening = () => {
+        shouldContinueRef.current = false; // Disable loop
+        recognitionRef.current?.stop();
+        setIsListening(false);
+    }
+
     const toggleListening = () => {
         if (isListening) {
-            recognitionRef.current?.stop();
+            stopListening();
         } else {
-            setError(null);
-            setTranscript("");
-            transcriptRef.current = ""; // Reset ref
-            setResponse("");
-            // Cancel any ongoing speech
-            synthRef.current?.cancel();
-            setIsSpeaking(false);
-
-            // Stop TTS if speaking
-            if (synthRef.current) synthRef.current.cancel();
-
-            try {
-                recognitionRef.current?.start();
-                setIsListening(true);
-            } catch (e) {
-                console.error("Start Error:", e);
-                setIsListening(false);
-            }
+            startListening();
         }
     };
 
@@ -168,15 +191,20 @@ export default function VoiceAIPage() {
                 speak(data.response, data.audio);
             } else {
                 setError(data.error || "Failed to get response");
+                shouldContinueRef.current = false; // Stop loop on error
             }
         } catch (err) {
             setError("Network error. Please try again.");
+            shouldContinueRef.current = false;
         } finally {
             setIsLoading(false);
         }
     };
 
     const speak = async (text: string, audioBase64?: string) => {
+        // Ensure loop is active (unless stopped elsewhere)
+        if (!isListening) shouldContinueRef.current = true;
+
         if (audioBase64) {
             try {
                 const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -192,6 +220,10 @@ export default function VoiceAIPage() {
                 source.onended = () => {
                     setIsSpeaking(false);
                     audioCtx.close();
+                    // AUTO-RESTART LISTENING
+                    if (shouldContinueRef.current) {
+                        setTimeout(() => startListening(), 500); // Small delay for UX
+                    }
                 };
                 setIsSpeaking(true);
                 source.start(0);
@@ -205,8 +237,17 @@ export default function VoiceAIPage() {
         synthRef.current.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.onstart = () => setIsSpeaking(true);
-        utterance.onend = () => setIsSpeaking(false);
-        utterance.onerror = () => setIsSpeaking(false);
+        utterance.onend = () => {
+            setIsSpeaking(false);
+            // AUTO-RESTART LISTENING
+            if (shouldContinueRef.current) {
+                setTimeout(() => startListening(), 500); // Small delay for UX
+            }
+        };
+        utterance.onerror = () => {
+            setIsSpeaking(false);
+            shouldContinueRef.current = false;
+        };
 
         // Priority 1: Use the Ref (most up to date)
         if (selectedVoiceRef.current) {
@@ -224,6 +265,7 @@ export default function VoiceAIPage() {
     };
 
     const stopSpeaking = () => {
+        shouldContinueRef.current = false; // Kill the loop
         synthRef.current?.cancel();
         setIsSpeaking(false);
     };
@@ -268,12 +310,12 @@ export default function VoiceAIPage() {
                         <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
                             Speak your <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500 animate-gradient-x">
-                                Mind.
+                                NextVoice.
                             </span>
                         </h1>
 
                         <p className="text-lg md:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-8 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-                            Experience the next evolution of conversation. Talk naturally to our <span className="text-white font-semibold">Gemini 2.0 Flash</span> powered AI. zero latency, human-like understanding, and absolute privacy.
+                            Experience the next evolution of conversation. Talk naturally to <span className="text-white font-semibold">NextVoice</span>—our Gemini 2.0 Flash powered AI. Zero latency, human-like understanding, and absolute privacy.
                         </p>
 
                         {/* Feature Badges */}

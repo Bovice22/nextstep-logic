@@ -52,28 +52,28 @@ export default function Header() {
                                     <Link href="/tools/booking" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
                                         <div className="font-semibold text-white group-hover/item:text-accent-pink flex items-center gap-2">
                                             <span className="material-symbols-outlined text-accent-pink">calendar_month</span>
-                                            Bookings
+                                            NextSlot
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">Automated appointment scheduling</div>
                                     </Link>
                                     <Link href="/tools/chatbot" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
                                         <div className="font-semibold text-white group-hover/item:text-accent-cyan flex items-center gap-2">
                                             <span className="material-symbols-outlined text-accent-cyan">smart_toy</span>
-                                            AI Support Agent
+                                            NextChat
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">24/7 Automated customer service</div>
                                     </Link>
                                     <Link href="/tools/video-generator" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
                                         <div className="font-semibold text-white group-hover/item:text-indigo-400 flex items-center gap-2">
                                             <span className="material-symbols-outlined text-indigo-400">movie</span>
-                                            AI Video Creator
+                                            NextStream
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">Bring your ideas to life</div>
                                     </Link>
                                     <Link href="/tools/voice-ai" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
                                         <div className="font-semibold text-white group-hover/item:text-emerald-400 flex items-center gap-2">
                                             <span className="material-symbols-outlined text-emerald-400">mic</span>
-                                            Voice AI Agent
+                                            NextVoice
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">Natural voice conversations</div>
                                     </Link>
@@ -100,14 +100,14 @@ export default function Header() {
                                     <Link href="/tools/email" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
                                         <div className="font-semibold text-white group-hover/item:text-amber-400 flex items-center gap-2">
                                             <span className="material-symbols-outlined text-amber-400">mail</span>
-                                            Email Summarizer
+                                            NextBrief
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">Quickly summarize long threads</div>
                                     </Link>
                                     <Link href="/tools/image-generator" className="block px-4 py-3 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors group/item">
                                         <div className="font-semibold text-white group-hover/item:text-purple-400 flex items-center gap-2">
                                             <span className="material-symbols-outlined text-purple-400">image</span>
-                                            AI Image Creator
+                                            NextPixel
                                         </div>
                                         <div className="text-xs text-slate-500 mt-0.5">Generate stunning visuals</div>
                                     </Link>
@@ -139,22 +139,22 @@ export default function Header() {
                     <Link href="/#how-it-works" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>How It Works</Link>
                     <Link href="/#who-we-help" className="text-slate-300 hover:text-white text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Who We Help</Link>
                     <Link href="/tools/email" className="text-amber-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                        <span className="material-symbols-outlined text-sm">mail</span> Free Tools: Email
+                        <span className="material-symbols-outlined text-sm">mail</span> NextBrief
                     </Link>
                     <Link href="/tools/image-generator" className="text-purple-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                        <span className="material-symbols-outlined text-sm">image</span> Free Tools: Image Gen
+                        <span className="material-symbols-outlined text-sm">image</span> NextPixel
                     </Link>
                     <Link href="/tools/booking" className="text-accent-pink hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                        <span className="material-symbols-outlined text-sm text-accent-pink">calendar_month</span> Paid Tools: Bookings
+                        <span className="material-symbols-outlined text-sm text-accent-pink">calendar_month</span> NextSlot
                     </Link>
                     <Link href="/tools/chatbot" className="text-accent-cyan hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                        <span className="material-symbols-outlined text-sm text-accent-cyan">smart_toy</span> Paid Tools: Chatbot
+                        <span className="material-symbols-outlined text-sm text-accent-cyan">smart_toy</span> NextChat
                     </Link>
                     <Link href="/tools/video-generator" className="text-indigo-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                        <span className="material-symbols-outlined text-sm text-indigo-400">movie</span> Paid Tools: Video Creator
+                        <span className="material-symbols-outlined text-sm text-indigo-400">movie</span> NextStream
                     </Link>
                     <Link href="/tools/voice-ai" className="text-emerald-400 hover:text-white text-sm font-medium flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                        <span className="material-symbols-outlined text-sm text-emerald-400">mic</span> Paid Tools: Voice AI Agent
+                        <span className="material-symbols-outlined text-sm text-emerald-400">mic</span> NextVoice
                     </Link>
                     <Link href="/#contact" className="bg-primary text-white text-sm font-bold px-5 py-2.5 rounded-lg text-center" onClick={() => setMobileMenuOpen(false)}>
                         Schedule Consultation

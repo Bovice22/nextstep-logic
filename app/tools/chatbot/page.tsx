@@ -29,7 +29,7 @@ export default function ChatbotPage() {
                         </div>
 
                         <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-2 leading-tight">
-                            24/7 Support. <br />
+                            NextChat. <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">
                                 Zero Human Effort.
                             </span>
@@ -73,7 +73,7 @@ export default function ChatbotPage() {
                                 </div>
                                 <h3 className="text-xl font-bold mb-3 text-white group-hover:text-purple-400 transition-colors">Booking Integration</h3>
                                 <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-                                    Seamlessly integrates with NextStep Booking. The AI can check availability and guide users directly to your booking page.
+                                    Seamlessly integrates with NextSlot. The AI can check availability and guide users directly to your booking page.
                                 </p>
                             </div>
 

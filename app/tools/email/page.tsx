@@ -47,7 +47,7 @@ export default function EmailToolPage() {
                         <Mail size={32} />
                     </div>
                     <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                        Inbox <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Intelligence</span>
+                        NextBrief <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Intelligence</span>
                     </h1>
                     <p className="text-xl text-slate-400 max-w-2xl mx-auto">
                         Paste a messy email thread below. AI will instantly summarize it, extract action items, and write a reply for you.

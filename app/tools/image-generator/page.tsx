@@ -112,14 +112,14 @@ export default function ImageGeneratorPage() {
                         </div>
 
                         <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl">
-                            Dream It. <br />
+                            NextPixel. <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 animate-gradient-x">
                                 Create It.
                             </span>
                         </h1>
 
                         <p className="text-lg md:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-8">
-                            Unleash your creativity with our <span className="text-white font-semibold">AI Image Generator</span>. Description to visuals in seconds—completely free.
+                            Unleash your creativity with <span className="text-white font-semibold">NextPixel</span>. Description to visuals in seconds—completely free.
                         </p>
 
                         <div className="hidden lg:flex items-center gap-4 text-sm font-medium text-slate-500">

@@ -111,7 +111,7 @@ export default function VideoGeneratorPage() {
                         </div>
 
                         <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] mb-8 drop-shadow-2xl">
-                            Dream Big. <br />
+                            NextStream. <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-500 to-indigo-600 animate-gradient-x">
                                 Watch It Be.
                             </span>

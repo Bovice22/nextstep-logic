@@ -27,7 +27,7 @@ export default function BookingPage() {
                         </div>
 
                         <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-2 leading-tight">
-                            Booking Software. <br />
+                            NextSlot. <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-pink to-purple-500">
                                 Built for Growth.
                             </span>
@@ -82,7 +82,7 @@ export default function BookingPage() {
                                 </div>
                                 <h3 className="text-xl font-bold mb-3">White Label</h3>
                                 <p className="text-slate-400 leading-relaxed">
-                                    Your brand, your colors, your fonts. NextStep Booking disappears so your business takes center stage.
+                                    Your brand, your colors, your fonts. NextSlot disappears so your business takes center stage.
                                 </p>
                             </div>
                         </div>

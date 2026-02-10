@@ -55,8 +55,8 @@ export default function Home() {
                                             key={i}
                                             className="absolute w-12 h-12 bg-surface-dark/80 backdrop-blur-md border border-white/10 rounded-xl flex items-center justify-center shadow-lg animate-orbit"
                                             style={{
-                                                top: `${50 + 35 * Math.sin(i * (Math.PI / 3))}%`,
-                                                left: `${50 + 35 * Math.cos(i * (Math.PI / 3))}%`,
+                                                top: `${(50 + 35 * Math.sin(i * (Math.PI / 3))).toFixed(4)}%`,
+                                                left: `${(50 + 35 * Math.cos(i * (Math.PI / 3))).toFixed(4)}%`,
                                                 animationDelay: `${i * 0.5}s`,
                                                 transform: 'translate(-50%, -50%)' // Center the item relative to its position
                                             }}
@@ -88,8 +88,8 @@ export default function Home() {
                                         {[...Array(6)].map((_, i) => {
                                             const angle = (i * 60) * (Math.PI / 180);
                                             const radius = 35;
-                                            const x2 = 50 + radius * Math.cos(angle);
-                                            const y2 = 50 + radius * Math.sin(angle);
+                                            const x2 = (50 + radius * Math.cos(angle)).toFixed(4);
+                                            const y2 = (50 + radius * Math.sin(angle)).toFixed(4);
 
                                             return (
                                                 <line
